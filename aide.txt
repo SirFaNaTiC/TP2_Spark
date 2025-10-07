@@ -1,0 +1,7 @@
+hadoop fs -rm -r -f sortie
+
+hadoop fs -ls sortie/
+
+hadoop fs -tail sortie/part-00000
+
+hadoop fs -cat sortie/part-00000
