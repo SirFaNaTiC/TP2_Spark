@@ -1,0 +1,6 @@
+Question 1 :
+
+GPS: 48.86711843883388, 2.252942110616445 | Hauteur (m): 45.0 | Adresse: ROUTE DU LAC A BAGATELLE
+
+Question 2 : 
+

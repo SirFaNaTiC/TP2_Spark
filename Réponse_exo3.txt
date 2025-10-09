@@ -1,0 +1,91 @@
+Comment spark-submit --deploy-mode client --master local[2] PySpark_Pi.py pour exécuter PySpark_Pi.py.
+
+Pi is roughly  3.14848 en gros l'algorithme nous renvoye le nombre pi calculer
+
+spark-submit --deploy-mode client --master local[2] PySpark_exemple1.py
+
+Aucun retour ( a voir pourquoi)
+
+Vue car le code illustre le concept fondamental de Spark : la transformation de données 
+locales en données distribuées. Cependant, il ne fait aucune opération sur les données parallélisées - 
+c'est juste une démonstration de base de la parallélisation.
+
+spark-submit --deploy-mode client --master local[2] PySpark_exemple2.py
+
+J'ai l'erreur suivante :
+Traceback (most recent call last):
+  File "/root/pyspark/PySpark_exemple2.py", line 15, in <module>
+    totalLength = lineLengths.reduce(lambda a, b: a + b)
+  File "/usr/local/spark/python/lib/pyspark.zip/pyspark/rdd.py", line 999, in reduce
+  File "/usr/local/spark/python/lib/pyspark.zip/pyspark/rdd.py", line 950, in collect
+  File "/usr/local/spark/python/lib/py4j-0.10.9.3-src.zip/py4j/java_gateway.py", line 1321, in __call__
+  File "/usr/local/spark/python/lib/py4j-0.10.9.3-src.zip/py4j/protocol.py", line 326, in get_return_value
+py4j.protocol.Py4JJavaError: An error occurred while calling z:org.apache.spark.api.python.PythonRDD.collectAndServe.
+: org.apache.hadoop.mapred.InvalidInputException: Input path does not exist: hdfs://hadoop-master:9000/user/root/README.md
+        at org.apache.hadoop.mapred.FileInputFormat.singleThreadedListStatus(FileInputFormat.java:304)
+        at org.apache.hadoop.mapred.FileInputFormat.listStatus(FileInputFormat.java:244)
+        at org.apache.hadoop.mapred.FileInputFormat.getSplits(FileInputFormat.java:332)
+        at org.apache.spark.rdd.HadoopRDD.getPartitions(HadoopRDD.scala:205)
+        at org.apache.spark.rdd.RDD.$anonfun$partitions$2(RDD.scala:300)
+        at scala.Option.getOrElse(Option.scala:189)
+        at org.apache.spark.rdd.RDD.partitions(RDD.scala:296)
+        at org.apache.spark.rdd.MapPartitionsRDD.getPartitions(MapPartitionsRDD.scala:49)
+        at org.apache.spark.rdd.RDD.$anonfun$partitions$2(RDD.scala:300)
+        at scala.Option.getOrElse(Option.scala:189)
+        at org.apache.spark.rdd.RDD.partitions(RDD.scala:296)
+        at org.apache.spark.api.python.PythonRDD.getPartitions(PythonRDD.scala:55)
+        at org.apache.spark.rdd.RDD.$anonfun$partitions$2(RDD.scala:300)
+        at scala.Option.getOrElse(Option.scala:189)
+        at org.apache.spark.rdd.RDD.partitions(RDD.scala:296)
+        at org.apache.spark.SparkContext.runJob(SparkContext.scala:2279)
+        at org.apache.spark.rdd.RDD.$anonfun$collect$1(RDD.scala:1030)
+        at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:151)
+        at org.apache.spark.rdd.RDDOperationScope$.withScope(RDDOperationScope.scala:112)
+        at org.apache.spark.rdd.RDD.withScope(RDD.scala:414)
+        at org.apache.spark.rdd.RDD.collect(RDD.scala:1029)
+        at org.apache.spark.api.python.PythonRDD$.collectAndServe(PythonRDD.scala:180)
+        at org.apache.spark.api.python.PythonRDD.collectAndServe(PythonRDD.scala)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+        at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+        at java.lang.reflect.Method.invoke(Method.java:498)
+        at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+        at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:357)
+        at py4j.Gateway.invoke(Gateway.java:282)
+        at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+        at py4j.commands.CallCommand.execute(CallCommand.java:79)
+        at py4j.ClientServerConnection.waitForCommands(ClientServerConnection.java:182)
+        at py4j.ClientServerConnection.run(ClientServerConnection.java:106)
+        at java.lang.Thread.run(Thread.java:748)
+Caused by: java.io.IOException: Input path does not exist: hdfs://hadoop-master:9000/user/root/README.md
+        at org.apache.hadoop.mapred.FileInputFormat.singleThreadedListStatus(FileInputFormat.java:278)
+        ... 34 more
+
+Pour la regler faut faire :
+# Créer un fichier exemple
+echo "Hello World\nThis is a test file\nfor Spark processing" > README.md
+
+# Copier le fichier dans HDFS
+hadoop fs -put README.md /user/root/README.md
+
+# Vérifier que le fichier existe
+hadoop fs -ls /user/root/
+
+Une fois le code execute cela nous renvoie 54 qui est le nombre de caractére contenu dans le fichier
+
+spark-submit --deploy-mode client --master local[2] PySpark_exemple3.py
+
+[2, 2, 2, 3, 3, 3, 4, 4, 4]
+
+en gros la flat prend la liste [2,3,4]
+
+Crée un new liste et copie chaque element 3 fois sont les regroupes 
+
+Alors que le map
+
+prend la liste [1,2,3]
+
+Duplique chaque élement 3 fois dans une nouvelle en regroupant les informations 
+
+[[1, 1, 1], [2, 2, 2], [3, 3, 3]]
+

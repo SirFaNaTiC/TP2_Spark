@@ -4,4 +4,11 @@ hadoop fs -ls sortie/
 
 hadoop fs -tail sortie/part-00000
 
+
+hadoop fs -ls input ( pour voir ce qu'il  y a dans le dossier input)
+
 hadoop fs -cat sortie/part-00000
+
+hadoop fs -put arbresremarquablesparis2.csv input
+
+docker cp baby_names_2013.csv hadoop-master:/root/pyspark
