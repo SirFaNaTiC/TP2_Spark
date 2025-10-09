@@ -4,3 +4,70 @@ GPS: 48.86711843883388, 2.252942110616445 | Hauteur (m): 45.0 | Adresse: ROUTE D
 
 Question 2 : 
 
+La sortie est bien ce que l'on veut ( exemple pour l'Arrondissement 4 les coordonées Long : 48.85235484734731 et Lat : 2.3518099200412093 corresponde bien a l'addresse suivante : 2 Quai de l'Archevêché, 75004 Paris, France qui est bien dans le 4éme Arrondissement)
+
+Arrondissement 1: 48.85774901106895, 2.339403945743016
+Arrondissement 3: 48.86483748918709, 2.3606255373544416
+Arrondissement 4: 48.85235484734731, 2.3518099200412093, 48.85278262187125, 2.351016049448295
+Arrondissement 5: 48.84931650431551, 2.345186352900594
+Arrondissement 7: 48.857838762835684, 2.293318744984814
+Arrondissement 8: 48.87858281831969, 2.307559794134397
+Arrondissement 9: 48.876921252496146, 2.3467187956592257
+Arrondissement 10: 48.868295444671816, 2.3631894428551883
+Arrondissement 11: 48.86185385430401, 2.379087765579776
+Arrondissement 12: 48.83416244901348, 2.382559592189677
+Arrondissement 13: 48.83303012348956, 2.3506965031403526
+Arrondissement 14: 48.822714704800305, 2.338688411499106
+Arrondissement 15: 48.84264131753845, 2.296091104016332
+Arrondissement 16: 48.84714674672381, 2.2519835357695808
+Arrondissement 17: 48.887621002634695, 2.316435229873108
+Arrondissement 18: 48.88460843256252, 2.3439162521533463
+Arrondissement 19: 48.880337104666346, 2.381291342815737
+Arrondissement 20: 48.86562176547551, 2.399941138607966
+
+Question 3 :
+Acer: cappadocicum, monspessulanum, pseudoplatanus, saccharinum
+Aesculus: hippocastanum, pavia
+Alnus: sp.
+Araucaria: araucana
+Betula: nigra
+Calocedrus: decurrens
+Catalpa: bignonioides, speciosa
+Cedrus: atlantica
+Celtis: koraiensis
+Corylus: colurna
+Cryptomeria: japonica
+Davidia: involucrata var. vilmoriniana
+Diospyros: kaki, lotus, virginiana
+Eucommia: ulmoides
+Fagus: sylvatica
+Ficus: carica
+Fraxinus: excelsior
+Ginkgo: biloba
+Gymnocladus: dioica
+Juglans: nigra
+Koelreuteria: paniculata
+Liriodendron: tulipifera
+Maclura: pomifera
+Magnolia: grandiflora
+Melia: azedarach
+Metasequoia: glyptostroboides
+Morus: alba, sp.
+Pinus: bungeana, nigra, nigra subsp. laricio
+Pistacia: terebinthus
+Platanus: orientalis, x hispanica
+Pterocarya: fraxinifolia, stenoptera
+Punica: granatum
+Quercus: cerris, frainetto, ilex, robur, suber subsp. Occidentalis
+Robinia: pseudoacacia
+Salix: babylonica
+Sequoia: sempervirens
+Sequoiadendron: giganteum
+Styphnolobium: japonicum
+Tamarix: sp.
+Taxodium: distichum
+Taxus: baccata
+Tilia: tomentosa
+Toona: sinensis
+Ulmus: glabra, minor
+Zelkova: carpinifolia, sinica
