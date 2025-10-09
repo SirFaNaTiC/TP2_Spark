@@ -30,17 +30,14 @@ if __name__ == "__main__":
     sc = SparkContext(appName="ArbrePlusGrand")
 
     try:
-        # 1) Lecture du fichier et découpage
         rows = sc.textFile(input_path).map(lambda line: line.split(";"))
 
-        # 2) Filtrer lignes valides: suffisamment de colonnes, hauteur non vide et convertible en float
         valid = (
             rows.filter(lambda p: len(p) > max(GPS_COL, ADDRESS_COL, HEIGHT_COL))
                 .filter(lambda p: p[HEIGHT_COL].strip() != "")
                 .filter(lambda p: _can_float(p[HEIGHT_COL].strip()))
         )
 
-        # 3) Mapper vers (hauteur_float, (gps, adresse, hauteur_str)) pour réduire sur la hauteur max
         keyed = valid.map(
             lambda p: (
                 float(p[HEIGHT_COL].strip()),
@@ -48,8 +45,6 @@ if __name__ == "__main__":
             )
         )
 
-        # 4) Réduire pour trouver la hauteur max
-        #    retourne (max_height, (gps, adresse, height_str))
         def keep_max(a, b):
             return a if a[0] >= b[0] else b
 
@@ -59,7 +54,6 @@ if __name__ == "__main__":
 
         result_line = f"GPS: {gps} | Hauteur (m): {max_height} | Adresse: {adresse}"
 
-        # 5) Sortie: impression + sauvegarde (coalesce pour un seul fichier part-00000)
         print(result_line)
         sc.parallelize([result_line], 1).saveAsTextFile(output_path)
 
