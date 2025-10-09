@@ -1,0 +1,123 @@
+Question étudiée
+
+Quels sont les films les plus “polarisants” de MovieLens ?
+Autrement dit : quels films divisent le plus les spectateurs, non pas parce que certains notent toujours haut ou toujours bas, mais parce que les avis sur ces films se partagent réellement en deux camps.
+
+Données et outillage
+
+Jeu de données : MovieLens ml-latest-small (fichiers ratings.csv et movies.csv, ~100 000 notes).
+
+Environnement : PySpark (sans surcouche), dans un conteneur Linux/Docker.
+
+Sorties : deux CSV (top_global.csv, top5_by_genre.csv) exportés à côté du script.
+
+Méthodologie (originale et “sophistiquée”)
+
+Débiaisage par utilisateur
+Chaque utilisateur a un “niveau” de notation (certains sont plus généreux, d’autres plus sévères).
+
+On calcule la moyenne des notes par utilisateur.
+
+Pour chaque note, on calcule un résidu :
+
+r
+e
+ˊ
+sidu
+=
+note
+−
+note
+‾
+utilisateur
+r
+e
+ˊ
+sidu=note−
+note
+utilisateur
+	​
+
+
+Cette étape enlève le biais “perso” et permet de comparer les films plus justement.
+
+Agrégations par film
+À partir des résidus, on calcule pour chaque film :
+
+n : nombre de notes,
+
+resid_std : écart-type des résidus (dispersion dé-biaisée),
+
+prop_pos : proportion de résidus > 0 (part d’avis “au-dessus du goût habituel”),
+
+min_resid / max_resid / mean_resid : bornes et moyenne des résidus.
+
+Score de controverse
+Un film polarisant n’est pas juste dispersé : il partage aussi les opinions (≈ 50/50).
+
+Mesure d’équilibre des camps :
+
+balance
+=
+1
+−
+2
+⋅
+∣
+prop_pos
+−
+0,5
+∣
+balance=1−2⋅
+	​
+
+prop_pos−0,5
+	​
+
+
+(maximal à 1 quand on est proche de 50 % d’avis “positifs” vs 50 % “négatifs”).
+
+Score final :
+
+controversy
+=
+resid_std
+×
+balance
+controversy=resid_std×balance
+
+Plus il est grand, plus le film est clivant.
+
+Filtrage de robustesse
+Pour éviter les artefacts, on garde les films avec :
+
+n ≥ 30 notes,
+
+min_resid < −0,75 et max_resid > +0,75 (présence d’avis très en-dessous et très au-dessus des goûts habituels),
+
+et resid_std non nul.
+
+Résultats produits
+
+Top global des films les plus polarisants (top_global.csv) trié par controversy (puis resid_std, puis n).
+
+Top 5 par genre (top5_by_genre.csv) via une fenêtre analytique partitionnée par genre.
+
+Pourquoi cette approche répond à la question
+
+On ne se contente pas d’une variance brute des notes : on corrige le biais utilisateur (comparaison plus équitable).
+
+On combine dispersion et équilibre des opinions, ce qui capture réellement la polarisation (deux camps opposés), et pas seulement le désordre statistique.
+
+Le filtrage garantit que le signal n’est pas dû au hasard sur quelques notes.
+
+Le classement par genre met en évidence les films divisifs au sein de chaque univers thématique, ce qui est pertinent pour des recommandations ou une analyse éditoriale.
+
+Livrables & lecture
+
+top_global.csv : liste des films, avec n, resid_std, prop_pos, balance, controversy, bornes de résidus et genres.
+
+top5_by_genre.csv : pour chaque genre, les 5 films les plus clivants (rk = rang).
+Ces fichiers sont directement exploitables (Excel/LibreOffice/Notebook) et permettent d’illustrer des cas d’usage : éditorial (“films qui font débat”), recommandation (éviter/proposer selon le profil), études de réception, etc.
+
+En résumé : nous avons conçu et implémenté en PySpark pur un pipeline original pour mesurer la polarisation des films MovieLens en retirant le biais individuel et en pondérant par l’équilibre des avis, puis nous avons classé les films globalement et par genre. Cela répond précisément à la question “quels films divisent le plus les spectateurs ?” de façon robuste et justifiée.
